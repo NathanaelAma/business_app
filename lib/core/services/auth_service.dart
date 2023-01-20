@@ -39,7 +39,6 @@ class AuthService {
     try {
       await http.post(Uri.parse('${UrlConstants.baseUrl}/sap/logout'));
       Future.delayed(const Duration(seconds: 1), () {});
-      
     } catch (err) {
       rethrow;
     }

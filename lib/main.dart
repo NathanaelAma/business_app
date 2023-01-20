@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:business_app/core/providers/auth_provider.dart';
 import 'package:business_app/ui/pages/home/home_page.dart';
+import 'package:business_app/ui/pages/pick/pick_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:business_app/ui/pages/auth/login_page.dart';
@@ -33,6 +34,7 @@ class App extends StatelessWidget {
       routes: {
         '/login': (context) => const LoginPage(),
         '/home': (context) => const HomePage(),
+        '/picklist': (context) => const PickPage(),
       },
     );
   }

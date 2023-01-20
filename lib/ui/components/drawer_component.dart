@@ -1,42 +1,43 @@
+import 'package:business_app/core/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-  // Add a ListView to the drawer. This ensures the user can scroll
-  // through the options in the drawer if there isn't enough vertical
-  // space to fit everything.
-  child: ListView(
-    // Important: Remove any padding from the ListView.
-    padding: EdgeInsets.zero,
-    children: [
-      const DrawerHeader(
-        decoration: BoxDecoration(
-          color: Colors.blue,
+    return Consumer<AuthProvider>(builder: (context, auth, child) {
+      return Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            UserAccountsDrawerHeader(
+              decoration: const BoxDecoration(
+                color: Colors.blue,
+              ),
+              accountName: Text(auth.currentUser?.userName ?? 'Default'),
+              accountEmail: Text(auth.currentCompany!.companyName),
+            ),
+            ListTile(
+              leading: const Icon(Icons.home_filled),
+              title: const Text('Pick List'),
+              onTap: () {
+                Navigator.pushNamed(
+                  context, '/picklist',
+                );
+              },
+            ),
+            ListTile(
+              title: const Text('Item 2'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+              },
+            ),
+          ],
         ),
-        child: Text('Drawer Header'),
-      ),
-      ListTile(
-        title: const Text('Item 1'),
-        onTap: () {
-          // Update the state of the app.
-          // ...
-        },
-      ),
-      ListTile(
-        title: const Text('Item 2'),
-        onTap: () {
-          // Update the state of the app.
-          // ...
-        },
-      ),
-    ],
-  ),
-);
-;
+      );
+    });
   }
 }
