@@ -1,7 +1,8 @@
+import 'package:business_app/core/providers/pick_provider.dart';
 import 'package:business_app/ui/pages/pick/components/header_card.dart';
+import 'package:business_app/ui/pages/pick/components/tabbed_screen.dart';
 import 'package:flutter/material.dart';
-
-import 'components/lines_list.dart';
+import 'package:provider/provider.dart';
 
 class PickPage extends StatefulWidget {
   const PickPage({super.key});
@@ -11,8 +12,9 @@ class PickPage extends StatefulWidget {
 }
 
 class _PickPageState extends State<PickPage> {
+  static final TextEditingController _textEditingController =
+      TextEditingController();
 
-  
   @override
   void initState() {
     super.initState();
@@ -29,29 +31,60 @@ class _PickPageState extends State<PickPage> {
         height: MediaQuery.of(context).size.height,
         width: double.infinity,
         child: Column(children: [
-          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-            const Text('Pick List#'),
-            Expanded(
-              flex: 1,
-              child: Column(
-                children: [
-                  const TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Pick List#',
-                    ),
-                    textInputAction: TextInputAction.done,
+          Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text('Pick List #'),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextField(
+                          controller: _textEditingController,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Pick List #',
+                          ),
+                          textInputAction: TextInputAction.done,
+                        ),
+                      ),
+                      Consumer<PickProvider>(
+                        builder: (context, pickProvider, child) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(
+                              child: const Text('Search'),
+                              onPressed: () {
+                                pickProvider.getPickList(
+                                    int.parse(_textEditingController.text));
+                                pickProvider.getUniquePickListLines(
+                                    pickId:
+                                        int.parse(_textEditingController.text));
+                                // print(pickProvider.getUniquePickListLines(pickList: pickProvider.pickList!));
+                              },
+                            ),
+                          );
+                        },
+                      )
+                    ],
                   ),
-                  ElevatedButton(
-                    child: const Text('Search'),
-                    onPressed: () {},
-                  )
-                ],
-              ),
-            )
-          ]),
-          const HeaderCard(),
-          const LinesList(),
+                )
+              ]),
+          const SizedBox(height: 20),
+          Consumer<PickProvider>(
+            builder: (context, pickProvider, child) {
+              return pickProvider.pickList != null
+                  ? HeaderCard(pickList: pickProvider.pickList!)
+                  : const Text('No Pick List');
+            },
+          ),
+          const Expanded(child: TabbedScreens()),
         ]),
       ),
     );

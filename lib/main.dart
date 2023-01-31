@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:business_app/core/providers/auth_provider.dart';
+import 'package:business_app/core/providers/pick_provider.dart';
 import 'package:business_app/ui/pages/home/home_page.dart';
 import 'package:business_app/ui/pages/pick/pick_screen.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,9 @@ void main() async {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider<AuthProvider>(
       create: (context) => AuthProvider(),
-    )
+    ),
+    ChangeNotifierProvider<PickProvider>(
+      create: (context) => PickProvider()),
   ], builder: (context, wigdet) => const App()));
 }
 
@@ -24,13 +27,12 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return MaterialApp(
       title: 'Business App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/login',
+      initialRoute: '/picklist',
       routes: {
         '/login': (context) => const LoginPage(),
         '/home': (context) => const HomePage(),
